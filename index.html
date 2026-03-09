@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Valentine Surprise</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial, sans-serif;
+background:#ffe6f0;
+text-align:center;
+overflow:hidden;
+}
+
+.screen{
+display:none;
+height:100vh;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+padding:20px;
+}
+
+.active{
+display:flex;
+}
+
+button{
+padding:12px 24px;
+margin:10px;
+font-size:18px;
+border:none;
+border-radius:10px;
+background:#ff4d6d;
+color:white;
+cursor:pointer;
+}
+
+#yesBtn{
+transition:0.3s;
+}
+
+.noBtn{
+background:#444;
+position:relative;
+}
+
+img{
+max-width:85%;
+border-radius:15px;
+margin-top:15px;
+}
+
+/* hearts animation */
+
+.heart{
+position:fixed;
+bottom:-20px;
+font-size:24px;
+animation:up 4s linear forwards;
+}
+
+@keyframes up{
+0%{
+transform:translateY(0);
+opacity:1;
+}
+100%{
+transform:translateY(-110vh);
+opacity:0;
+}
+}
+
+/* envelope */
+
+.envelope{
+width:220px;
+height:140px;
+background:#ff4d6d;
+position:relative;
+cursor:pointer;
+border-radius:6px;
+}
+
+.flap{
+position:absolute;
+width:0;
+height:0;
+border-left:110px solid transparent;
+border-right:110px solid transparent;
+border-bottom:70px solid #ff758f;
+top:-70px;
+left:0;
+transition:0.5s;
+}
+
+.open .flap{
+transform:rotateX(180deg);
+}
+
+.letter{
+position:absolute;
+width:92%;
+background:white;
+top:0;
+left:4%;
+padding:15px;
+border-radius:5px;
+transform:translateY(0);
+transition:0.6s;
+}
+
+.open .letter{
+transform:translateY(-160px);
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- Screen 1 -->
+
+<div class="screen active" id="screen1">
+
+<h2>Open this… 😊</h2>
+
+<p>I have a question for you.</p>
+
+<button onclick="nextScreen(2)">Continue</button>
+
+</div>
+
+
+<!-- Screen 2 -->
+
+<div class="screen" id="screen2">
+
+<h2>Do you really love me?</h2>
+
+<p>Will you be my Valentine forever?</p>
+
+<p><i>If you're curious, click No.</i></p>
+
+<button id="yesBtn" onclick="nextScreen(3)">Yes</button>
+
+<button id="noBtn" class="noBtn">No</button>
+
+</div>
+
+
+<!-- Screen 3 -->
+
+<div class="screen" id="screen3">
+
+<h2>Congratulations! ❤️</h2>
+
+<p>You made the right choice.</p>
+
+<button onclick="nextScreen(4)">Open Letter</button>
+
+</div>
+
+
+<!-- Screen 4 -->
+
+<div class="screen" id="screen4" style="background:#fff0f5">
+
+<div class="envelope" id="envelope" onclick="openLetter()">
+
+<div class="flap"></div>
+
+<div class="letter">
+
+<img src="image.jpg">
+
+<h3>To my favourite person 💖</h3>
+
+<p>
+I just wanted to make you smile today.<br>
+You are really special to me.
+</p>
+
+<p><b>– Paru</b></p>
+
+</div>
+
+</div>
+
+<p style="margin-top:20px">Tap the envelope 💌</p>
+
+</div>
+
+
+<script>
+
+/* screen change */
+
+function nextScreen(n){
+
+document.querySelectorAll(".screen").forEach(s=>{
+s.classList.remove("active")
+})
+
+document.getElementById("screen"+n).classList.add("active")
+
+if(n==3){
+startHearts()
+}
+
+}
+
+
+/* running No button + Yes grow */
+
+const noBtn=document.getElementById("noBtn")
+const yesBtn=document.getElementById("yesBtn")
+
+let size=18
+
+noBtn.addEventListener("touchstart",moveBtn)
+noBtn.addEventListener("mouseover",moveBtn)
+
+function moveBtn(){
+
+const x=Math.random()*200-100
+const y=Math.random()*200-100
+
+noBtn.style.transform=`translate(${x}px,${y}px)`
+
+size+=6
+
+yesBtn.style.fontSize=size+"px"
+yesBtn.style.padding=(12+size/4)+"px "+(24+size/3)+"px"
+
+}
+
+
+/* hearts upward animation */
+
+function startHearts(){
+
+setInterval(()=>{
+
+const heart=document.createElement("div")
+
+heart.classList.add("heart")
+
+heart.innerHTML="❤️"
+
+heart.style.left=Math.random()*100+"vw"
+
+document.body.appendChild(heart)
+
+setTimeout(()=>{
+heart.remove()
+},4000)
+
+},400)
+
+}
+
+
+/* envelope open */
+
+function openLetter(){
+
+document.getElementById("envelope").classList.toggle("open")
+
+}
+
+</script>
+
+</body>
+</html>
