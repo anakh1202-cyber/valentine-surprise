@@ -1,112 +1,228 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Valentine Surprise</title>
+
 <style>
-  * { margin:0; padding:0; box-sizing:border-box; font-family: Arial, sans-serif; }
-  body { display:flex; justify-content:center; align-items:center; min-height:100vh; background:#ffe6f0; text-align:center; overflow-x:hidden; }
 
-  .screen { display:none; flex-direction:column; justify-content:center; align-items:center; width:100%; height:100vh; position:relative; }
-  .active { display:flex; }
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:#ffe6f0;
+  text-align:center;
+  overflow:hidden;
+}
 
-  button { padding:10px 20px; margin:10px; font-size:1rem; cursor:pointer; border:none; border-radius:8px; background:#ff6699; color:#fff; transition: transform 0.3s; }
-  button:hover { transform: scale(1.1); }
+.screen{
+  display:none;
+  height:100vh;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  padding:20px;
+}
 
-  /* Envelope */
-  #envelope { width:150px; height:100px; background:#ffb6c1; position:relative; cursor:pointer; margin-top:20px; border-radius:8px; }
-  #envelope::before { content:''; position:absolute; top:0; left:0; width:0; height:0; border-left:75px solid transparent; border-right:75px solid transparent; border-bottom:50px solid #ff69b4; }
-  #envelope.open::before { transform: rotateX(180deg); transition: transform 1s; }
+.active{
+  display:flex;
+}
 
-  /* Letter (photo + message) */
-  .letter { transform: translateY(100%); opacity:0; transition: transform 3s cubic-bezier(0.68, -0.55, 0.265, 1.55), opacity 2s ease-out; max-width:90%; margin-top:20px; }
-  .letter.open { transform: translateY(0); opacity:1; }
+button{
+  padding:12px 24px;
+  margin:10px;
+  font-size:18px;
+  border:none;
+  border-radius:10px;
+  background:#ff4d6d;
+  color:white;
+  cursor:pointer;
+}
 
-  /* Hearts animation */
-  .heart { position:absolute; font-size:1.5rem; color:#ff3366; animation: floatUp 4s linear infinite; }
-  @keyframes floatUp {
-    0% { transform: translateY(0) rotate(0deg); opacity:1; }
-    100% { transform: translateY(-500px) rotate(360deg); opacity:0; }
+#yesBtn{
+  transition:0.3s;
+}
+
+.noBtn{
+  background:#444;
+  position:relative;
+}
+
+img{
+  max-width:85%;
+  border-radius:15px;
+  margin-top:15px;
+}
+
+/* hearts animation */
+
+.heart{
+  position:fixed;
+  bottom:-20px;
+  font-size:24px;
+  animation:up 4s linear forwards;
+}
+
+@keyframes up{
+  0%{
+    transform:translateY(0);
+    opacity:1;
   }
+  100%{
+    transform:translateY(-110vh);
+    opacity:0;
+  }
+}
+
+/* envelope */
+
+.envelope{
+  width:220px;
+  height:140px;
+  background:#ff4d6d;
+  position:relative;
+  cursor:pointer;
+  border-radius:6px;
+}
+
+.flap{
+  position:absolute;
+  width:0;
+  height:0;
+  border-left:110px solid transparent;
+  border-right:110px solid transparent;
+  border-bottom:70px solid #ff758f;
+  top:-70px;
+  left:0;
+  transition:0.5s;
+}
+
+.open .flap{
+  transform:rotateX(180deg);
+}
+
+/* letter: bottom-to-top reveal */
+
+.letter{
+  position:absolute;
+  width:92%;
+  background:white;
+  top:0;
+  left:4%;
+  padding:15px;
+  border-radius:5px;
+  transform: translateY(100%);  /* start below */
+  opacity:0;
+  transition: transform 3s cubic-bezier(0.68, -0.55, 0.265, 1.55), opacity 2s ease-out;
+}
+
+.open .letter{
+  transform: translateY(0);   /* move up */
+  opacity:1;
+}
+
 </style>
+
 </head>
+
 <body>
 
-<!-- Background Music -->
 <audio id="bgMusic">
-  <source src="music.mp3" type="audio/mpeg">
+<source src="music.mp3" type="audio/mpeg">
 </audio>
 
-<!-- Screen 1: Introduction -->
-<div id="screen1" class="screen active">
-  <h1>Open this… 😊</h1>
-  <p>I have a question for you.</p>
-  <button id="continueBtn">Continue</button>
+<!-- Screen 1 -->
+<div class="screen active" id="screen1">
+<h2>Open this… 😊</h2>
+<p>I have a question for you.</p>
+<button onclick="nextScreen(2)">Continue</button>
 </div>
 
-<!-- Screen 2: Tricky Valentine Question -->
-<div id="screen2" class="screen">
-  <h2>Do you really love me? Will you be my Valentine forever?</h2>
-  <p>If you’re curious, click No.</p>
-  <button id="yesBtn">Yes</button>
-  <button id="noBtn">No</button>
+<!-- Screen 2 -->
+<div class="screen" id="screen2">
+<h2>Do you really love me?</h2>
+<p>Will you be my Valentine forever?</p>
+<p><i>If you're curious, click No.</i></p>
+<button id="yesBtn" onclick="nextScreen(3)">Yes</button>
+<button id="noBtn" class="noBtn">No</button>
 </div>
 
-<!-- Screen 3: Envelope / Letter -->
-<div id="screen3" class="screen">
-  <div id="envelope"></div>
-  <div id="letter" class="letter">
-    <img src="image.png.jpg" alt="My Valentine" style="max-width:90%; border-radius:8px; margin-bottom:10px;">
-    <p>To my favourite person 💖<br>
-       I just wanted to make you smile today.<br>
-       You are really special to me.<br>
-       – Paru</p>
+<!-- Screen 3 -->
+<div class="screen" id="screen3">
+<h2>Congratulations! ❤️</h2>
+<p>You made the right choice.</p>
+<button onclick="nextScreen(4)">Open Letter</button>
+</div>
+
+<!-- Screen 4 -->
+<div class="screen" id="screen4" style="background:#fff0f5">
+<div class="envelope" id="envelope" onclick="openLetter()">
+  <div class="flap"></div>
+  <div class="letter">
+    <img src="image.jpg">
+    <h3>To my favourite person 💖</h3>
+    <p>
+      I just wanted to make you smile today.<br>
+      You are really special to me.
+    </p>
+    <p><b>– Paru</b></p>
   </div>
+</div>
+<p style="margin-top:20px">Tap the envelope 💌</p>
 </div>
 
 <script>
-  // Screen transitions
-  const screen1 = document.getElementById("screen1");
-  const screen2 = document.getElementById("screen2");
-  const screen3 = document.getElementById("screen3");
-  const continueBtn = document.getElementById("continueBtn");
-  const yesBtn = document.getElementById("yesBtn");
-  const noBtn = document.getElementById("noBtn");
-  const envelope = document.getElementById("envelope");
-  const letter = document.getElementById("letter");
-  const bgMusic = document.getElementById("bgMusic");
 
-  continueBtn.onclick = () => { screen1.classList.remove("active"); screen2.classList.add("active"); }
-
-  // Trick effect for No button
-  noBtn.onclick = () => {
-    if(noBtn.innerText === "No") noBtn.innerText = "Maybe";
-    else if(noBtn.innerText === "Maybe") noBtn.innerText = "Try Again";
-    else noBtn.innerText = "No";
+/* screen change */
+function nextScreen(n){
+  document.querySelectorAll(".screen").forEach(s=>{
+    s.classList.remove("active")
+  })
+  document.getElementById("screen"+n).classList.add("active")
+  if(n==3){
+    startHearts()
   }
+}
 
-  yesBtn.onclick = () => { screen2.classList.remove("active"); screen3.classList.add("active"); spawnHearts(); }
+/* running No button + Yes grow */
+const noBtn=document.getElementById("noBtn")
+const yesBtn=document.getElementById("yesBtn")
 
-  // Envelope click → reveal letter + music
-  function openLetter(){
-    envelope.classList.toggle("open");
-    bgMusic.play();
-    letter.classList.add("open"); // smooth bottom-to-top reveal
-  }
-  envelope.onclick = openLetter;
+let size=18
 
-  // Hearts animation
-  function spawnHearts(){
-    for(let i=0;i<10;i++){
-      const heart = document.createElement("div");
-      heart.classList.add("heart");
-      heart.style.left = Math.random()*90 + "%";
-      heart.style.fontSize = (Math.random()*1.5+1) + "rem";
-      screen3.appendChild(heart);
-      setTimeout(()=>{ heart.remove(); },4000);
-    }
-  }
+noBtn.addEventListener("touchstart",moveBtn)
+noBtn.addEventListener("mouseover",moveBtn)
+
+function moveBtn(){
+  const x=Math.random()*200-100
+  const y=Math.random()*200-100
+  noBtn.style.transform=`translate(${x}px,${y}px)`
+
+  size+=6
+  yesBtn.style.fontSize=size+"px"
+  yesBtn.style.padding=(12+size/4)+"px "+(24+size/3)+"px"
+}
+
+/* hearts upward animation */
+function startHearts(){
+  setInterval(()=>{
+    const heart=document.createElement("div")
+    heart.classList.add("heart")
+    heart.innerHTML="❤️"
+    heart.style.left=Math.random()*100+"vw"
+    document.body.appendChild(heart)
+    setTimeout(()=>{
+      heart.remove()
+    },4000)
+  },400)
+}
+
+/* envelope open + letter bottom-to-top + music */
+function openLetter(){
+  document.getElementById("envelope").classList.toggle("open");
+  document.getElementById("bgMusic").play();
+}
+
 </script>
 
 </body>
