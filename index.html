@@ -99,22 +99,22 @@ img{
   transform:rotateX(180deg);
 }
 
-/* letter: slow bottom-to-top float */
+/* letter: initially centered + gentle float */
 .letter{
   position:absolute;
   width:92%;
   background:white;
-  top:50px; /* start slightly below */
+  top:50%;                /* start center vertically */
   left:4%;
   padding:15px;
   border-radius:5px;
-  transform: translateY(100px);  /* initial position */
+  transform: translateY(-50%); /* perfectly center */
   opacity:0;
-  transition: transform 4s ease-in-out, opacity 2.5s ease-in;
+  transition: transform 3.5s ease-in-out, opacity 2.5s ease-in;
 }
 
 .open .letter{
-  transform: translateY(-50px);  /* final position: floats up */
+  transform: translateY(-60%); /* gently floats slightly up */
   opacity:1;
 }
 
@@ -214,11 +214,11 @@ function startHearts(){
   },400)
 }
 
-/* envelope open + letter bottom-to-top + music */
+/* envelope open + letter gentle float + music */
 function openLetter(){
   document.getElementById("envelope").classList.toggle("open");
   document.getElementById("bgMusic").play();
-  document.querySelector(".letter").classList.add("open"); // slow float
+  document.querySelector(".letter").classList.add("open"); // triggers slow gentle float
 }
 
 </script>
