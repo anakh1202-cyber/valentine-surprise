@@ -134,7 +134,9 @@ transform:translateY(-160px);
 </head>
 
 <body>
-
+<audio id="bgMusic">
+<source src="music.mp3" type="audio/mpeg">
+</audio>
 <!-- Screen 1 -->
 
 <div class="screen active" id="screen1">
@@ -281,8 +283,8 @@ heart.remove()
 
 function openLetter(){
 
-document.getElementById("envelope").classList.toggle("open")
-
+document.getElementById("envelope").classList.toggle("open");
+document.getElementById("bgMusic").play();
 }
 
 </script>
