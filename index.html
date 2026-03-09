@@ -55,7 +55,6 @@ img{
 }
 
 /* hearts animation */
-
 .heart{
   position:fixed;
   bottom:-20px;
@@ -75,7 +74,6 @@ img{
 }
 
 /* envelope */
-
 .envelope{
   width:220px;
   height:140px;
@@ -101,23 +99,22 @@ img{
   transform:rotateX(180deg);
 }
 
-/* letter: bottom-to-top reveal */
-
+/* letter: slow bottom-to-top float */
 .letter{
   position:absolute;
   width:92%;
   background:white;
-  top:0;
+  top:50px; /* start slightly below */
   left:4%;
   padding:15px;
   border-radius:5px;
-  transform: translateY(100%);  /* start below */
+  transform: translateY(100px);  /* initial position */
   opacity:0;
-  transition: transform 3s cubic-bezier(0.68, -0.55, 0.265, 1.55), opacity 2s ease-out;
+  transition: transform 4s ease-in-out, opacity 2.5s ease-in;
 }
 
 .open .letter{
-  transform: translateY(0);   /* move up */
+  transform: translateY(-50px);  /* final position: floats up */
   opacity:1;
 }
 
@@ -221,6 +218,7 @@ function startHearts(){
 function openLetter(){
   document.getElementById("envelope").classList.toggle("open");
   document.getElementById("bgMusic").play();
+  document.querySelector(".letter").classList.add("open"); // slow float
 }
 
 </script>
